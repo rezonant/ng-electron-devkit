@@ -1,4 +1,4 @@
-import { DevServerBuilder, BrowserBuilderSchema } from '@angular-devkit/build-angular';
+import { DevServerBuilder, BrowserBuilderSchema, NormalizedBrowserBuilderSchema } from '@angular-devkit/build-angular';
 import { Path, virtualFs } from '@angular-devkit/core';
 import * as fs from 'fs';
 import { electronConfig } from '../electron-webpack-config';
@@ -10,12 +10,12 @@ export class ElectronDevServerBuilder extends DevServerBuilder {
         root: Path,
         projectRoot: Path,
         host: virtualFs.Host<fs.Stats>,
-        browserOptions: BrowserBuilderSchema,
+        browserOptions: NormalizedBrowserBuilderSchema,
     ) {
         const browserConfig = super.buildWebpackConfig(root, projectRoot, host, browserOptions);
         const webpackConfigs: {}[] = [
             browserConfig,
-            electronConfig
+            electronConfig()
         ];
 
         return webpackMerge(webpackConfigs);
