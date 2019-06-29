@@ -1,7 +1,7 @@
 {
   "name": "@rezonant/ng-electron-devkit",
   "description": "Angular Webpack Build Facade for Electron",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "main": "dist/src/index.js",
   "private": false,
   "builders": "builders.json",
