@@ -18,7 +18,7 @@ export function serveElectronBrowser(options: DevServerBuilderOptions, context: 
     return from(setup())
         .pipe(
             switchMap(
-                settings => executeDevServerBuilder(options, context, {
+                (settings : ElectronBrowserBuilderSchema) => executeDevServerBuilder(options, context, {
                     webpackConfiguration: (browserConfig) => {
                         return webpackMerge(browserConfig, electronConfig(settings.electron ? settings.electron.externals : []));
                     }

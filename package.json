@@ -6,11 +6,12 @@
   "private": false,
   "builders": "builders.json",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p .",
     "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^10.12.10",
+    "typescript": "^3.5.2",
     "webpack": "^4.35.0"
   },
   "dependencies": {
@@ -20,7 +21,7 @@
     "@angular/compiler": "^7.2.11",
     "@angular/compiler-cli": "^7.2.11",
     "@angular/core": "^7.2.11",
-    "rxjs": "^6.5.2",
+    "rxjs": "~6.4.0",
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
