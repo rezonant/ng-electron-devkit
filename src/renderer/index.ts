@@ -1,45 +1,25 @@
-import {
-  BuilderContext,
-  BuilderConfiguration,
-  BuildEvent
-} from "@angular-devkit/architect";
-import { BrowserBuilder, NormalizedBrowserBuilderSchema, BrowserBuilderSchema } from "@angular-devkit/build-angular";
-import { Path, virtualFs } from '@angular-devkit/core';
+import { BuilderContext, createBuilder } from "@angular-devkit/architect";
+import { executeBrowserBuilder, BrowserBuilderOutput, BrowserBuilderOptions } from "@angular-devkit/build-angular";
+import { json } from '@angular-devkit/core';
 import { Observable } from "rxjs";
-import * as fs from 'fs';
 import { electronConfig } from '../electron-webpack-config';
 import { ElectronBrowserBuilderSchema, ElectronConfiguration } from "./schema";
 
 const webpackMerge = require('webpack-merge');
 
-export class ElectronBuilder extends BrowserBuilder {
+export type ElectronBrowserSchema = BrowserBuilderOptions & ElectronBrowserBuilderSchema;
 
-  constructor(public context: BuilderContext) {
-    super(context);
-  }
+export function buildElectronBrowser(options: ElectronBrowserSchema, context: BuilderContext): Observable<BrowserBuilderOutput> {
+  return executeBrowserBuilder(options, context, {
+    webpackConfiguration: (browserConfig) => {
+      const webpackConfigs: {}[] = [
+        browserConfig,
+        electronConfig((options.electron || {} as ElectronConfiguration).externals)
+      ];
 
-  run(builderConfig: BuilderConfiguration<BrowserBuilderSchema>): Observable<BuildEvent> {
-    return super.run(builderConfig);
-  }
-
-  buildWebpackConfig(
-    root: Path,
-    projectRoot: Path,
-    host: virtualFs.Host<fs.Stats>,
-    options: ElectronBrowserBuilderSchema,
-  ) {
-
-    let browserConfig = super.buildWebpackConfig(root, projectRoot, host, options);
-
-    const webpackConfigs: {}[] = [
-      browserConfig,
-      electronConfig((options.electron || {} as ElectronConfiguration).externals)
-    ];
-
-    
-
-    return webpackMerge(webpackConfigs);
-  }
+      return webpackMerge(webpackConfigs);
+    }
+  });
 }
 
-export default ElectronBuilder;
+export default createBuilder<json.JsonObject & ElectronBrowserSchema>(buildElectronBrowser);

@@ -1,12 +1,12 @@
 {
   "builders": {
     "renderer": {
-      "class": "./dist/src/renderer",
+      "implementation": "./dist/src/renderer",
       "schema": "./src/renderer/schema.json",
       "description": "Build an electron renderer app."
     },
     "dev-server": {
-      "class": "./dist/src/dev-server",
+      "implementation": "./dist/src/dev-server",
       "schema": "./src/dev-server/schema.json",
       "description": "Serve an electron renderer app."
     }    
