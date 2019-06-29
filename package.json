@@ -6,7 +6,8 @@
   "private": false,
   "builders": "builders.json",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^10.12.10",
